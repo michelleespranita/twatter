@@ -1,0 +1,5 @@
+CREATE TABLE userInfo (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR NOT NULL,
+  password VARCHAR NOT NULL
+);
