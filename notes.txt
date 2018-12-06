@@ -1,0 +1,7 @@
+Export all of these:
+    export FLASK_APP=application.py
+    export DATABASE_URL="postgresql://localhost/db_name"
+    export PGPASSWORD="your_password"
+
+Templates must be saved in the "templates" directory
+url_for finds a function, not a router

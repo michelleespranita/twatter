@@ -5,7 +5,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 app = Flask(__name__)
-
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
@@ -14,7 +13,7 @@ def index():
     twatts = db.execute("SELECT * FROM twatts").fetchall()
     return render_template("home.html",twatts=twatts)
 
-@app.route("/posttwatt")
+@app.route("/post-twatt")
 def post():
     #when I login, I have a certain user id. How do I pass that value into the twatts table?
     twatt=request.form.get("twatt")
