@@ -1,0 +1,90 @@
+body {
+    background-color: #fff093;
+  }
+
+  .column {
+    float: left;
+    padding: 10px;
+  }
+
+  .left {
+    width: 20%;
+  }
+
+  .right {
+    width: 20%;
+  }
+
+  .middle {
+    width: 60%;
+  }
+
+  #twatts {
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+  }
+
+  .bg-modal {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+  }
+
+  .modal-content {
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    border-radius: 4px;
+    text-align: center;
+    align-items: center;
+    padding: 10px;
+    position: relative;
+  }
+
+  input {
+    width: 400px;
+    height: 150px;
+    display: block;
+    margin: 20px auto;
+  }
+
+  .close {
+    position: absolute;
+    top: 0;
+    right: 14px;
+    font-size: 20px;
+    transform: rotate(45deg);
+    cursor: pointer;
+  }
+
+  .twatt {
+      background-color: #77dd11;
+      padding: 20px;
+      margin-bottom: 10px;
+      animation-name: hide;
+      animation-duration: 2s;
+      animation-fill-mode: forwards;
+      animation-play-state: paused;
+  }
+
+  #atwatt {
+    width: 100%;
+    height: 10%;
+    background-color: white;
+    margin: 10px;
+
+
+  }
+
+  #twatt-box {
+      width: 300px;
+      height: 200px;
+      margin: 10px;
+  }
