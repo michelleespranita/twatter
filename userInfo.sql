@@ -5,8 +5,8 @@ CREATE TABLE userInfo (
   username VARCHAR UNIQUE,
   password VARCHAR NOT NULL,
   bio VARCHAR DEFAULT '',
-  followers INTEGER DEFAULT 0,
-  following INTEGER DEFAULT 0,
+  nofollowers INTEGER DEFAULT 0,
+  nofollowing INTEGER DEFAULT 0,
   noTwatt INTEGER DEFAULT 0
 );
 
