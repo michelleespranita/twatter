@@ -1,6 +1,6 @@
 import time, os
 
-from flask import Flask, jsonify, render_template, request, session, redirect, url_for, escape, g
+from flask import Flask, jsonify, render_template, request, session, redirect, url_for, escape, g, make_response # make_response allows me not only to return HTML, but to return whatever I want
 from flask_session import Session
 from sqlalchemy import create_engine # sqlalchemy is used to connect Python and SQL
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -70,9 +70,14 @@ def index():
         session.pop('user', None)
         username=request.form.get("usernamelogin")
         password=request.form.get("passwordlogin")
-        if db.execute("SELECT * FROM userInfo WHERE username=:username AND password=:password",{"username": username, "password": password}).rowcount!=0:
+        # is this correct?
+        get_userID=db.execute("SELECT * FROM userInfo WHERE username=:username AND password=:password",{"username": username, "password": password}).fetchone()
+        userID=get_userID['id']
+        if userID:
             session['user']=username
-            return redirect(url_for('home',username=username))
+            response = redirect(url_for("home",username=username))
+            response.set_cookie('YourSessionCookie', str(userID)) # assigns the value userID to YourSessionCookie # set_cookie only receives string values, so we must first convert userID from int to string!
+            return response
     return render_template("login.html")
 
 
@@ -90,18 +95,23 @@ def registerring():
         db.execute("INSERT INTO userInfo (name,email,username,password,bio) VALUES (:name,:email,:username,:password,:bio)",{"name":name, "email":email, "username":username, "password":password, "bio":bio})
         db.commit()
         return render_template("success.html")
-    else:
-        return render_template("errorUNtaken.html")
+    return render_template("errorUNtaken.html")
 
 @app.route("/home", methods=["GET", "POST"])
 def home():
-    if g.user:
-        twatt = request.form.get("twatt")
-        if twatt:
-            db.execute("INSERT INTO twatts (twatt) VALUES (:twatt)",{"twatt":twatt})
-            db.commit()
-        twatts = db.execute("SELECT * FROM twatts").fetchall()
-        return render_template("home.html",username=request.args.get('username'),twatts=twatts)
+    userID = request.cookies.get('YourSessionCookie') # userID is a string
+    if userID:
+        if g.user:
+            username_id = int(userID) # userID must be converted to an integer
+            twatt = request.form.get("twatt")
+            if twatt:
+                db.execute("INSERT INTO twatts (username_id,twatt) VALUES (:username_id,:twatt)",{"username_id":username_id,"twatt":twatt})
+                db.commit()
+            twatts = db.execute("SELECT username,twatt FROM twatts JOIN userInfo ON userInfo.id = twatts.username_id").fetchall()
+            get_bio = db.execute("SELECT * FROM userInfo WHERE id=:id",{"id":username_id}).fetchone() # doesn't work with fetchall()
+            bio=get_bio['bio']
+            statistics = db.execute("SELECT notwatt,followers,following FROM userInfo WHERE id=:id",{"id":username_id}).fetchall() # returns the number of twatts, followers and following
+            return render_template("home.html",username=g.user,twatts=twatts,bio=bio,statistics=statistics)
     return redirect(url_for('index'))
 
 @app.route("/logout")

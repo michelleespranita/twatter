@@ -51,7 +51,7 @@
     background-color: rgba(0, 0, 0, 0.7);
     position: absolute;
     top: 0;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
   }
@@ -146,26 +146,28 @@
         </li>
       </ul>
       <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Options
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="{{ url_for('profile') }}">Profile</a>
+          <a class="dropdown-item" href="#">Profile</a>
           <a class="dropdown-item" href="#">Settings</a>
-          <a class="dropdown-item" href="#">-</a>
+          <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
         </div>
       </div>
         <!-- button for the bg-modal -->
-      <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit" id="twatt">Twatt</button> 
+      <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit" id="twatt">Twatt</button>
     </div>
   </nav>
   <div class="modal-body">
     <div class="column left">
       <div class="card" style="width: 15rem;">
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">{{ noTwatts }} Twatts</li>
-          <li class="list-group-item">{{ following }} Following</li>
-          <li class="list-group-item">{{ followers }} Followers</li>
+          {% for statistic in statistics %}
+            <li class="list-group-item">{{ statistic.notwatt }} Twatts</li>
+            <li class="list-group-item">{{ statistic.following }} Following</li>
+            <li class="list-group-item">{{ statistic.followers }} Followers</li>
+          {% endfor %}
         </ul>
       </div>
     </div>
@@ -177,7 +179,7 @@
           </form>
           <br><br>
          {% for twatt in twatts %}
-            <div class="atwatt">{{ twatt.twatt }}</div>
+            <div class="atwatt">{{ twatt.username }} : {{ twatt.twatt }}</div>
             <hr>
          {% endfor %}
       </div>
@@ -187,7 +189,7 @@
       </div>
       <div id="bio">
         <b>@{{ username }}</b>
-        <p>Thomas Cruise Mapother IV is an American actor and producer. He started his career at age 19 in the film Endless Love, before making his breakthrough in the comedy Risky Business and receiving widespread attention for starring in the action drama Top Gun as Lieutenant Pete "Maverick" Mitchell.</p>
+        <p>{{ bio }}</p>
       </div>
     </div>
   </div>
