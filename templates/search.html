@@ -1,0 +1,171 @@
+{% extends "layout.html" %}
+
+{% block title %} {{ keyword }} - Twatter Search {% endblock %}
+
+{% block head %}
+
+<style>
+        body {
+        background-color: #fff093;
+      }
+    
+      .column {
+        float: left;
+        padding: 10px;
+      }
+    
+      .left {
+        width: 20%;
+      }
+    
+      .right {
+        width: 20%;
+      }
+    
+      .middle {
+        width: 60%;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        padding: 10px;
+      }
+    
+      #twatts {
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+      }
+    
+      .bg-modal {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        position: absolute;
+        top: 0;
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
+    
+      .modal-content {
+        width: 500px;
+        height: 300px;
+        background-color: white;
+        border-radius: 4px;
+        text-align: center;
+        align-items: center;
+        padding: 10px;
+        position: relative;
+      }
+    
+      input {
+        width: 400px;
+        height: 150px;
+        display: block;
+        margin: 20px auto;
+      }
+    
+      .close {
+        position: absolute;
+        top: 0;
+        right: 14px;
+        font-size: 20px;
+        transform: rotate(45deg);
+        cursor: pointer;
+      }
+    
+      /* .twatt {
+          background-color: #77dd11;
+          padding: 20px;
+          margin-bottom: 10px;
+          animation-name: hide;
+          animation-duration: 2s;
+          animation-fill-mode: forwards;
+          animation-play-state: paused;
+      } */
+    
+      /* for a single twatt */
+      .atwatt {
+        background-color: white;
+      }
+    
+      /* for the twatt box in the middle column */
+      #twattbox {
+          width: 90%;
+          height: 100px;
+      }
+    
+    </style>
+
+{% endblock %}
+
+{% block body %}
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffd13a">
+        <a class="navbar-brand" href="#">Twatter</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Notifications</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Messages</a>
+            </li>
+          </ul>
+          <div class="dropdown">
+            <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Options
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Profile</a>
+              <a class="dropdown-item" href="#">Settings</a>
+              <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+            </div>
+          </div>
+            <!-- button for the bg-modal -->
+          <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit" id="twatt">Twatt</button>
+        </div>
+</nav>
+
+<div class="modal-body">
+        <div class="column left">
+          <div class="card" style="width: 15rem;">
+            <ul class="list-group list-group-flush">
+              {% for statistic in statistics %}
+                <li class="list-group-item">{{ statistic.notwatt }} Twatts</li>
+                <li class="list-group-item">{{ statistic.following }} Following</li>
+                <li class="list-group-item">{{ statistic.followers }} Followers</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="column middle"> <!-- Search results -->
+          <div id="twatts">
+             {% for searchresult in searchresults %}
+                <div class="atwatt">{{ searchresult.username }} : {{ searchresult.twatt }}
+                </div>
+                <hr>
+             {% endfor %}
+          </div>
+        </div>
+        <div class="column right">
+          <div id="profilepic">
+          </div>
+          <div id="bio">
+            <b>@{{ username }}</b>
+            <p>{{ bio }}</p>
+          </div>
+        </div>
+</div>
+{% endblock %}

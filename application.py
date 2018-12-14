@@ -114,6 +114,39 @@ def home():
             return render_template("home.html",username=g.user,twatts=twatts,bio=bio,statistics=statistics)
     return redirect(url_for('index'))
 
+# import re
+
+# COLOR = ['red', 'blue', 'orange', 'violet', 'green']
+
+# text = """Graham says that Perl is cooler than Java and Python than Perl. In some circles, maybe. Graham uses the example of Slashdot, written in Perl. But what about Advogato, written in C? What about all of the cool P2P stuff being written in all three of the languages? Considering that Perl is older than Java, and was at one time the Next Big Language, I think you would have a hard time getting statistical evidence that programmers consider Perl "cooler" than Java, except perhaps by virtue of the fact that Java has spent a few years as the "industry standard" (and is thus uncool for the same reason that the Spice Girls are uncool) and Perl is still "underground" (and thus cool, for the same reason that ambient is cool). Python is even more "underground" than Perl (and thus cooler?). Maybe all Graham has demonstrated is that proximity to Lisp drives a language underground. Except that he's got the proximity to Lisp argument backwards too."""
+
+# regex = re.compile(r"(\blisp\b)|(\bpython\b)|(\bperl\b)|(\bjava\b)|(\bc\b)", re.I)
+
+# i = 0; output = "&lt;html&gt;"
+# for m in regex.finditer(text):
+#     output += "".join([text[i:m.start()],
+#                        "&lt;strong&gt;&lt;span style='color:%s'&gt;" % COLOR[m.lastindex-1],
+#                        text[m.start():m.end()],
+#                        "&lt;/span&gt;&lt;/strong&gt;"])
+#     i = m.end()
+# print "".join([output, text[m.end():], "&lt;/html&gt;"])
+
+@app.route("/search", methods=["POST"])
+def search():
+    keyword = request.form.get("search")
+    keyword.lower()
+    alltwatts = db.execute("SELECT username,twatt FROM twatts JOIN userInfo on userInfo.id = twatts.username_id").fetchall()
+    searchresults=[]
+    for atwatt in alltwatts:
+        if (atwatt.twatt.lower().find(keyword)!=-1):
+            searchresults.append(atwatt)
+    return render_template("search.html",searchresults=searchresults)
+    # if db.execute("SELECT * FROM twatts WHERE twatt=:twatt",{"twatt":keyword}).rowcount!=0:
+    #     searchresults = db.execute("SELECT username,twatt FROM twatts JOIN userInfo on userInfo.id = twatts.username_id WHERE twatt=:twatt",{"twatt":keyword}).fetchall()
+        
+    
+
+
 @app.route("/logout")
 def logout():
     session.pop('Username', None)
