@@ -134,13 +134,54 @@ def home():
 @app.route("/search", methods=["POST"])
 def search():
     keyword = request.form.get("search")
-    keyword.lower()
     alltwatts = db.execute("SELECT username,twatt FROM twatts JOIN userInfo on userInfo.id = twatts.username_id").fetchall()
     searchresults=[]
+    # searchresultsM=[]
     for atwatt in alltwatts:
-        if (atwatt.twatt.lower().find(keyword)!=-1):
+        if (atwatt.twatt.lower().find(keyword.lower())!=-1):
             searchresults.append(atwatt)
-    return render_template("search.html",searchresults=searchresults)
+    return render_template("search.html",searchresults=searchresults,keyword=keyword)
+    # print(searchresults)
+    # for searchresult in searchresults:
+    #     print(searchresult)
+
+    #     start = searchresult.twatt.lower().find(keyword)
+    #     lenofkeyword = len(keyword)
+    #     print(start)
+    #     print(lenofkeyword)
+    #     def beginWord(str):
+    #         beginning=""
+    #         for i in range(start):
+    #             beginning+=str[i]
+    #             print(beginning)
+    #         return beginning
+
+    #     begin = beginWord(searchresult.twatt)
+    #     print(begin)
+       
+    #     def boldWord(str):
+    #         bold=""
+    #         for i in range(start,start+lenofkeyword):
+    #             bold+=str[i]
+    #             print(bold)
+    #         return bold
+
+    #     boldd = boldWord(searchresult.twatt)
+    #     print(boldd)
+
+    #     def endWord(str):
+    #         end=""
+    #         for i in range(start+lenofkeyword,len(str)):
+    #             end+=str[i]
+    #             print(end)
+    #         return end
+                
+    #     endd = endWord(searchresult.twatt)
+    #     print(endd)
+
+    #     print(searchresult.twatt)
+    #     strr = begin + "<b>" + boldd + "</b>" + endd
+    #     searchresult.twatt = strr
     # if db.execute("SELECT * FROM twatts WHERE twatt=:twatt",{"twatt":keyword}).rowcount!=0:
     #     searchresults = db.execute("SELECT username,twatt FROM twatts JOIN userInfo on userInfo.id = twatts.username_id WHERE twatt=:twatt",{"twatt":keyword}).fetchall()
         

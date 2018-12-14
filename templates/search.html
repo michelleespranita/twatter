@@ -62,13 +62,7 @@
         position: relative;
       }
     
-      input {
-        width: 400px;
-        height: 150px;
-        display: block;
-        margin: 20px auto;
-      }
-    
+   
       .close {
         position: absolute;
         top: 0;
@@ -123,6 +117,10 @@
               <a class="nav-link" href="#">Messages</a>
             </li>
           </ul>
+          <form class="form-inline my-2 my-lg-0" action="{{ url_for('search') }}" method="post">
+                <input class="form-control mr-sm-1" type="search" placeholder="Search" aria-label="Search" name="search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"> Search </button>
+        </form>
           <div class="dropdown">
             <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Options
@@ -152,11 +150,15 @@
         </div>
         <div class="column middle"> <!-- Search results -->
           <div id="twatts">
-             {% for searchresult in searchresults %}
-                <div class="atwatt">{{ searchresult.username }} : {{ searchresult.twatt }}
-                </div>
-                <hr>
-             {% endfor %}
+            {% if searchresults %}
+                {% for searchresult in searchresults %}
+                    <div class="atwatt">{{ searchresult.username }} : {{ searchresult.twatt }}
+                    </div>
+                    <hr>
+                {% endfor %}
+            {% else %}
+                <div class="atwatt">No matching twatts!</div>
+            {% endif %}
           </div>
         </div>
         <div class="column right">
